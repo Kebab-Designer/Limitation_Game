@@ -5,6 +5,7 @@ Player player1;
 Map level;
 
 PFont score;
+PFont body;
 
 void setup() {
   size(800, 600);
@@ -17,15 +18,16 @@ void setup() {
   //the created map is the level instance
   player1.map = level;
     
+  //font stuff  
   score = createFont("montserrat black", 240);
+  body = createFont("montserrat", 24);
 }
 
 void draw() {
 
   // 0. Set the stage level and difficulty(0, 1, 2 etc.)
-
-
-
+  level.countDown();
+  
   // 1. Where is the Zone
   // 2. Where is the player
   // 3. Check the timer
@@ -43,15 +45,13 @@ void draw() {
 
 
   background(black);
-  
-  //logic timer
- 
-  
+
   //display timer
   textFont(score);
   textAlign(CENTER);
   fill(12);
-  text("5", width/2, height/2 + 80);
+  //rounds the countdown with the int instead of manually doing it
+  text(int(level.countdown), width/2, height/2 + 80);
 
   level.display();
 
@@ -59,6 +59,9 @@ void draw() {
   player1.display();
 
   //Gui -----v
-
+  textFont(body);
+  textAlign(LEFT);
+  fill(white);
+  text("Level:  " + level.stage, 10, 24);
   
 }
