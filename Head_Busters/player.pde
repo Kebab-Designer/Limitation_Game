@@ -16,7 +16,8 @@ class Player {
   //player safety
   boolean isSafe = false;
   
-  
+  //level advancement
+  boolean success = false;
   
   //assing incoming to local variables
   Player(float x, float y, float size, int status, int id) {
@@ -61,6 +62,7 @@ class Player {
     strokeWeight(3);
     line(mouseX, mouseY, map.zoneX, map.zoneY);
 
+    noStroke();
     fill(isSafe ? mint : crimson);
     circle(x, y, pSize);
   }

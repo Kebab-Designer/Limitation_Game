@@ -4,21 +4,18 @@ Player player1;
 //initialize map
 Map level;
 
-PFont score;
-PFont body;
-
 void setup() {
   size(800, 600);
   frameRate(60);
 
   player1 = new Player(0, 0, 80, 0, 0);
-  
+
   //create the level
   level = new Map();
   //the created map is the level instance
   player1.map = level;
-    
-  //font stuff  
+
+  //font stuff
   score = createFont("montserrat black", 240);
   body = createFont("montserrat", 24);
 }
@@ -27,15 +24,25 @@ void draw() {
 
   // 0. Set the stage level and difficulty(0, 1, 2 etc.)
   level.countDown();
-  
+
   // 1. Where is the Zone
   // 2. Where is the player
   // 3. Check the timer
   // 4. If timer has run out check if player is safe
 
+
+  if (player1.isSafe && level.countdown < 0.4) {
+    player1.success = true;
+  }
+
   //if all players are safe
   //congratulate players //wait a few sec
   //restart the process at step 0.
+
+  if (player1.success == true) {
+    level.update();
+    level.restart();
+  }
 
   //if one player not safe
   //announce the other player has won
@@ -44,7 +51,7 @@ void draw() {
   //after all of this -> start drawing
 
 
-  background(black);
+  background(player1.success ? crimson : honey);
 
   //display timer
   textFont(score);
@@ -63,5 +70,8 @@ void draw() {
   textAlign(LEFT);
   fill(white);
   text("Level:  " + level.stage, 10, 24);
-  
+}
+
+void keyPressed() {
+  level.update();
 }
