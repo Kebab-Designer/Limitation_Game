@@ -4,25 +4,20 @@ class Player {
   float size; //player diameter
   int status; //safe or not safe
   int id; //which player
-  Map map;
+
 
   //playerball
   int pSize = 40;
+  
+  
+  //import level data
+  Map map = level;
 
   //player safety
   boolean isSafe = false;
-
-
-  //collision variables
-  float zRadius; //radius of the main ellipse
-
-  //x and y coordinates of the safe zone
-  int zoneX;
-  int zoneY;
-  int zoneSize;
-
-
-
+  
+  
+  
   //assing incoming to local variables
   Player(float x, float y, float size, int status, int id) {
 
@@ -47,13 +42,13 @@ class Player {
 
     //calculate necessary variables for collision
     //calculate distance between player and zone (1)
-    float zDist = dist(mouseX, mouseY, zoneX, zoneY);
+    float zDist = dist(mouseX, mouseY, map.zoneX, map.zoneY);
 
     //calculate the new safe distance based on both radius (2)
     float playerDist = zDist + pSize/2;
 
     //if the zone radius is larger than the distance from the player
-    if (zoneSize/2 > playerDist) { //*note swap with zDist to make it easier
+    if (map.zoneSize/2 > playerDist) { //*note swap with zDist to make it easier
       isSafe = true;
       println("safe");
     } else {
@@ -64,7 +59,7 @@ class Player {
     //debug line
     stroke(sky);
     strokeWeight(3);
-    line(mouseX, mouseY, zoneX, zoneY);
+    line(mouseX, mouseY, map.zoneX, map.zoneY);
 
     fill(honey);
     circle(x, y, size);
