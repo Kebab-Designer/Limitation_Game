@@ -22,9 +22,20 @@ class Map {
       zoneY = int(random(0 + zoneSize/2, height - zoneSize/2));
     }
 
-    //zone
-    fill(white);
-    noStroke();
+    //zone style
+    noFill();
+    stroke(white);
     circle(zoneX, zoneY, zoneSize);
   }
+  
+  
+  void update(){
+    
+    
+    
+  }
+  
+  
+  
+  
 }

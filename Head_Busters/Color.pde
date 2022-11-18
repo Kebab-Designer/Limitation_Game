@@ -1,5 +1,5 @@
 //colors
-color black = color(12, 12, 12);
+color black = color(0, 0, 0);
 color white = color(250, 250, 250);
 color mint = color(78, 209, 160);
 color sky = color(87, 126, 232);
