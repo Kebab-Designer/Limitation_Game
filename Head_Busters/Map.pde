@@ -21,7 +21,11 @@ class Map {
     
     //random zone generation
       //randomize size
-      zoneSize = int(random(150, 400));
+      // old -> //zoneSize = int(random(150, 400));
+      
+      //incriment smaller zoneSize
+      zoneSize = 500 - (stage*20);
+      println(stage);
 
       //first randomize in order to offset from the edge
 
@@ -37,14 +41,16 @@ class Map {
     circle(zoneX, zoneY, zoneSize);
   }
 
-void restart(){
+void progress(){
   //resets countdown and advances the level
   
   // + need to integrate timer reducing by one every time as long as its above 5 secs
   countdown = 10.8;
   stage ++;
+  
+  //increase player size each level
+  player1.size = player1.size + 20;
 }
-
 
   void countDown() {
     
@@ -59,4 +65,8 @@ void restart(){
       //println(floor(countdown));
     }
   }
+  
+  
+  
+  
 }

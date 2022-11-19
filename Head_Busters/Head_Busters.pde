@@ -22,7 +22,7 @@ void setup() {
   //fps
   frameRate(60);
 
-  player1 = new Player(0, 0, 80, 0, 0);
+  player1 = new Player(0, 0, 60, 0, 0);
 
   //create the level
   level = new Map();
@@ -53,7 +53,7 @@ void draw() {
 
     //player safe -> win
     if (player1.isSafe == true) {
-      println("win");
+      //println("win");
       
       //game flow for screens
       gameStatus = true;
@@ -63,7 +63,7 @@ void draw() {
 
     //player not safe -> lose
     if (player1.isSafe == false) {
-      println("lose");
+      //println("lose");
       
       //gameflow for screens
       gameStatus = false;
@@ -77,8 +77,9 @@ void draw() {
   //restart the process at step 0.
 
   if (player1.success == true) {
+    level.progress();    
     level.update();
-    level.restart();
+
   }
 
   //if one player not safe
