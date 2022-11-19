@@ -4,6 +4,9 @@ Player player1;
 //initialize map
 Map level;
 
+//initialize items
+Item powerUp;
+
 //gameflow booleans
 boolean gameStatus = true;
 
@@ -25,8 +28,12 @@ void setup() {
 
   //create the level
   level = new Map();
+
   //the created map is the level instance
   player1.map = level;
+
+  //setup item
+  powerUp = new Item();
 
   //font stuff
   score = createFont("EuclidSquare-Bold.otf", 640);
@@ -56,20 +63,20 @@ void draw() {
     //player safe -> win
     if (player1.isSafe == true) {
       //println("win");
-      
+
       //game flow for screens
       gameStatus = true;
-      
+
       player1.success = true;
     }
 
     //player not safe -> lose
     if (player1.isSafe == false) {
       //println("lose");
-      
+
       //gameflow for screens
       gameStatus = false;
-      
+
       player1.success = false;
     }
   }
@@ -79,9 +86,13 @@ void draw() {
   //restart the process at step 0.
 
   if (player1.success == true) {
-    level.progress();    
+    level.progress();
     level.update();
 
+    //first time player has progressed
+    if (level.stage > 2) {
+      powerUp.generate();
+    }
   }
 
   //if one player not safe
@@ -100,12 +111,19 @@ void draw() {
   //rounds the countdown with the int instead of manually doing it
   text(int(level.countdown), width/2, height/2 + 240); //addition to compensate for font height
 
+  //1. layer -----------------> map
   level.display();
 
+  //2. layer -----------------> items
+  if (level.stage > 2) {
+    powerUp.display();
+  }
+
+  //3. layer -----------------> player
   player1.move();
   player1.display();
 
-
+  //4. layer -----------------> ui
   //Gui -----v
   textFont(body);
   textAlign(LEFT);
@@ -117,10 +135,10 @@ void draw() {
 }
 
 void keyPressed() {
-  
+
   //1. reset data
   level.resetGame();
-  
+
   //2. randomize zone
   level.update();
 }

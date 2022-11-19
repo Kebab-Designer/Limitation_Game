@@ -18,7 +18,6 @@ class Map {
     //state of success
     player1.success = false;
 
-
     //random zone generation
     //randomize size
     // old -> //zoneSize = int(random(150, 400));
