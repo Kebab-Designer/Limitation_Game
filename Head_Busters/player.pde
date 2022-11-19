@@ -7,7 +7,7 @@ class Player {
 
   
   //safety margin to be counted as within the zone
-  int safety = 20;
+  int safety = 0;
   
   //import level data
   Map map = level;

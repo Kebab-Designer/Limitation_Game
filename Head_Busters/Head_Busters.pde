@@ -89,7 +89,7 @@ void draw() {
     level.progress();
     level.update();
 
-    //first time player has progressed
+    //first time player has progressed //only happens once
     if (level.stage > 2) {
       powerUp.generate();
     }

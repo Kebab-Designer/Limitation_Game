@@ -12,6 +12,10 @@ class Item{
   }
   
   void display(){
+    
+    
+    
+    
     noStroke();
     fill(honey);
     circle(itemSpawn, itemHeight +=2, 40);
