@@ -33,6 +33,9 @@ void setup() {
   score = createFont("EuclidSquare-Bold.otf", 640);
   body = createFont("EuclidSquare-Medium.otf", 24);
 
+  //reset game
+  level.resetGame();
+
   //generate the very first circle in advance
   level.update();
 }
@@ -114,6 +117,11 @@ void draw() {
   //println(level.countdown);
 }
 
-//void keyPressed() {
-//  level.update();
-//}
+void keyPressed() {
+  
+  //1. reset data
+  level.resetGame();
+  
+  //2. randomize zone
+  level.update();
+}
