@@ -115,8 +115,14 @@ void draw() {
   level.display();
 
   //2. layer -----------------> items
-  if (level.stage > 2) {
+  if (level.stage > 2) { //activate items after passing level 2
+    
+    //modulo the stage to get a item every second level
+    //modulo
+    int frequency = level.stage%2; //only spits out 0 and 1
+    if (frequency > 0 && gameStatus == true){
     powerUp.display();
+    }
   }
 
   //3. layer -----------------> player
@@ -131,7 +137,7 @@ void draw() {
   text("Level:  " + level.stage, 10, 24);
 
   //debug
-  //println(level.countdown);
+  //println(frameCount%2);
 }
 
 void keyPressed() {

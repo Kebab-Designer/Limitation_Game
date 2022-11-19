@@ -24,7 +24,7 @@ class Map {
 
     //incriment smaller zoneSize
     zoneSize = 500 - (stage*20);
-    println(stage);
+    //println(stage);
 
     //first randomize in order to offset from the edge
 
@@ -77,5 +77,8 @@ class Map {
     
     //reset timer
     countdown = 10.8;
+    
+    //reset gameStatus game over
+    gameStatus = true;
   }
 }

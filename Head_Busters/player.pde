@@ -42,7 +42,7 @@ class Player {
 
     //calculate necessary variables for collision
     //calculate distance between player and zone (1)
-    float zDist = dist(mouseX, mouseY, map.zoneX, map.zoneY); //need to change these mouse variables to incoming variables
+    float zDist = dist(x, y, map.zoneX, map.zoneY); //need to change these mouse variables to incoming variables
 
     //calculate the new safe distance based on both radius (2)
     float playerDist = zDist + size/2 - safety;

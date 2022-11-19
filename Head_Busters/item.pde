@@ -14,7 +14,12 @@ class Item{
   void display(){
     noStroke();
     fill(honey);
-    circle(itemSpawn, itemHeight ++, 40);
+    circle(itemSpawn, itemHeight +=2, 40);
+    
+    //itemdebugging
+    stroke(255);
+    strokeWeight(2);
+    line(itemSpawn, itemHeight, mouseX, mouseY);
     
   }
 }
