@@ -4,10 +4,22 @@ Player player1;
 //initialize map
 Map level;
 
-void setup() {
-  size(800, 600);
-  frameRate(60);
+void settings() {
+  //full screen and resolution if on smaller and larger devices
+  if (displayWidth > 1920 && displayHeight > 1080) {
+    size(1920, 1080);
+  } else {
+    fullScreen();
+    //size(displayWidth, displayHeight); //not using fullscreen because both are mutually exclusive
+  }
 
+}
+
+void setup() {
+  
+  //fps
+  frameRate(60);
+  
   player1 = new Player(0, 0, 80, 0, 0);
 
   //create the level
@@ -16,8 +28,11 @@ void setup() {
   player1.map = level;
 
   //font stuff
-  score = createFont("montserrat black", 240);
+  score = createFont("montserrat black", 400);
   body = createFont("montserrat", 24);
+
+  //generate the very first circle in advance
+  level.update();
 }
 
 void draw() {
@@ -58,7 +73,7 @@ void draw() {
   textAlign(CENTER);
   fill(12);
   //rounds the countdown with the int instead of manually doing it
-  text(int(level.countdown), width/2, height/2 + 80);
+  text(int(level.countdown), width/2, height/2 + 120);
 
   level.display();
 
@@ -72,6 +87,6 @@ void draw() {
   text("Level:  " + level.stage, 10, 24);
 }
 
-void keyPressed() {
-  level.update();
-}
+//void keyPressed() {
+//  level.update();
+//}

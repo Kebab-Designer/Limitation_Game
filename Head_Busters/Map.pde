@@ -38,6 +38,9 @@ class Map {
   }
 
 void restart(){
+  //resets countdown and advances the level
+  
+  // + need to integrate timer reducing by one every time as long as its above 5 secs
   countdown = 10.8;
   stage ++;
 }
@@ -53,7 +56,7 @@ void restart(){
       //count to 0
       countdown = countdown - interval;
       
-      println(floor(countdown));
+      //println(floor(countdown));
     }
   }
 }
