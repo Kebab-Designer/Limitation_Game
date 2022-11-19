@@ -49,6 +49,9 @@ class Map {
 
     //increase player size each level
     player1.size = player1.size + 20;
+    
+    //reset item spawn
+    powerUp.collected = false;
   }
 
   void countDown() {
@@ -80,5 +83,6 @@ class Map {
     
     //reset gameStatus game over
     gameStatus = true;
+    
   }
 }

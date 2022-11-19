@@ -28,6 +28,8 @@ class Player {
     this.status = status;
     this.id = id;
     
+    //dont think i even need size, status and the id but ill leave them for now
+    
   }
 
   //move player according to sampled colors

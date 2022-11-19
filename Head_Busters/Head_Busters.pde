@@ -35,6 +35,9 @@ void setup() {
   //setup item
   powerUp = new Item();
 
+  //connect instance variables from item
+  powerUp.connect = level;
+
   //font stuff
   score = createFont("EuclidSquare-Bold.otf", 640);
   body = createFont("EuclidSquare-Medium.otf", 24);
@@ -116,12 +119,16 @@ void draw() {
 
   //2. layer -----------------> items
   if (level.stage > 2) { //activate items after passing level 2
-    
+
     //modulo the stage to get a item every second level
     //modulo
     int frequency = level.stage%2; //only spits out 0 and 1
-    if (frequency > 0 && gameStatus == true){
-    powerUp.display();
+    if (frequency > 0 && gameStatus == true) {
+
+      //only display when item has not been collected
+      if (powerUp.collected == false) {
+        powerUp.display();
+      }
     }
   }
 
