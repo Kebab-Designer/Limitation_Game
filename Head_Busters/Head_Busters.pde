@@ -80,6 +80,7 @@ void draw() {
   player1.move();
   player1.display();
 
+
   //Gui -----v
   textFont(body);
   textAlign(LEFT);

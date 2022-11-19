@@ -9,6 +9,8 @@ class Player {
   //playerball
   int pSize = 60;
   
+  //safety margin to be counted as within the zone
+  int safety = 20;
   
   //import level data
   Map map = level;
@@ -43,10 +45,10 @@ class Player {
 
     //calculate necessary variables for collision
     //calculate distance between player and zone (1)
-    float zDist = dist(mouseX, mouseY, map.zoneX, map.zoneY);
+    float zDist = dist(mouseX, mouseY, map.zoneX, map.zoneY); //need to change these mouse variables to incoming variables
 
     //calculate the new safe distance based on both radius (2)
-    float playerDist = zDist + pSize/2;
+    float playerDist = zDist + pSize/2 - safety;
 
     //if the zone radius is larger than the distance from the player
     if (map.zoneSize/2 > playerDist) { //*note swap with zDist to make it easier
