@@ -4,6 +4,9 @@ Player player1;
 //initialize map
 Map level;
 
+//gameflow booleans
+boolean gameStatus = true;
+
 void settings() {
   //full screen and resolution if on smaller and larger devices
   if (displayWidth > 1920 && displayHeight > 1080) {
@@ -12,14 +15,13 @@ void settings() {
     fullScreen();
     //size(displayWidth, displayHeight); //not using fullscreen because both are mutually exclusive
   }
-
 }
 
 void setup() {
-  
+
   //fps
   frameRate(60);
-  
+
   player1 = new Player(0, 0, 80, 0, 0);
 
   //create the level
@@ -28,8 +30,8 @@ void setup() {
   player1.map = level;
 
   //font stuff
-  score = createFont("montserrat black", 400);
-  body = createFont("montserrat", 24);
+  score = createFont("EuclidSquare-Bold.otf", 640);
+  body = createFont("EuclidSquare-Medium.otf", 24);
 
   //generate the very first circle in advance
   level.update();
@@ -45,9 +47,29 @@ void draw() {
   // 3. Check the timer
   // 4. If timer has run out check if player is safe
 
+  //is player safe when countdown is at 0
+  //Player lose
+  if (level.countdown < 0.4) {
 
-  if (player1.isSafe && level.countdown < 0.4) {
-    player1.success = true;
+    //player safe -> win
+    if (player1.isSafe == true) {
+      println("win");
+      
+      //game flow for screens
+      gameStatus = true;
+      
+      player1.success = true;
+    }
+
+    //player not safe -> lose
+    if (player1.isSafe == false) {
+      println("lose");
+      
+      //gameflow for screens
+      gameStatus = false;
+      
+      player1.success = false;
+    }
   }
 
   //if all players are safe
@@ -66,14 +88,14 @@ void draw() {
   //after all of this -> start drawing
 
 
-  background(player1.success ? crimson : honey);
+  background(gameStatus ? black : honey);
 
   //display timer
   textFont(score);
   textAlign(CENTER);
   fill(12);
   //rounds the countdown with the int instead of manually doing it
-  text(int(level.countdown), width/2, height/2 + 120);
+  text(int(level.countdown), width/2, height/2 + 240); //addition to compensate for font height
 
   level.display();
 
@@ -86,6 +108,9 @@ void draw() {
   textAlign(LEFT);
   fill(white);
   text("Level:  " + level.stage, 10, 24);
+
+  //debug
+  //println(level.countdown);
 }
 
 //void keyPressed() {

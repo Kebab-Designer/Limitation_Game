@@ -59,10 +59,10 @@ class Player {
       //println("danger");
     }
 
-    //debug line
-    stroke(sky);
-    strokeWeight(3);
-    line(mouseX, mouseY, map.zoneX, map.zoneY);
+    ////debug line
+    //stroke(sky);
+    //strokeWeight(3);
+    //line(mouseX, mouseY, map.zoneX, map.zoneY);
 
     noStroke();
     fill(isSafe ? mint : crimson);
