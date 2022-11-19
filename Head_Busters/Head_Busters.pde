@@ -18,8 +18,7 @@ void settings() {
 }
 
 void setup() {
-
-  //fps
+  //dictates countdown speed :(
   frameRate(60);
 
   player1 = new Player(0, 0, 60, 0, 0);

@@ -8,5 +8,5 @@ color crimson = color(245, 44, 75);
 
 
 //fonts
-PFont score;
-PFont body;
+PFont score; //euclid bold
+PFont body; //euclid medium
