@@ -36,14 +36,14 @@ class Item {
     //if the zone radius is larger than the distance from the player
     if (playerDist < size) { //*note swap with zDist to make it easier
       collected = true;
-      println("collected");
+      //println("collected");
       
       //when item is collected
       player1.size -= 30; //reduce player size by 30
       
     } else {
       collected = false;
-      println("nope");
+      //println("nope");
     }
 
     noStroke();

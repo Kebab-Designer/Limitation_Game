@@ -14,7 +14,9 @@ Screen ui;
 boolean gameStatus = true;
 
 //boolean for gameplay and menu time
-boolean gamePlay = false;
+boolean gamePlay = false; //used to control from game to lobby
+boolean leaderboard = false; //used to show leaderboard in lobby
+
 
 void settings() {
   //full screen and resolution if on smaller and larger devices
@@ -66,6 +68,11 @@ void draw() {
   //menu time -------------------------------------------------->
     //homeScreen
       ui.home();
+      
+      if(leaderboard){
+        //show leaderboard
+        ui.leaderboard();
+      }
   //menu time -------------------------------------------------->
 
 
@@ -125,7 +132,12 @@ void draw() {
     //after all of this -> start drawing
 
 
-    background(gameStatus ? black : honey);
+    background(black);    //gameplay background
+    
+    //game send to lobby prototype loop
+    if (gameStatus == false){ //has player lost?
+      gamePlay = false; //therefore not gaming anymore -> back to the lobby
+    }
 
     //display timer
     textFont(score);
@@ -165,6 +177,7 @@ void draw() {
 
     //gaming time -------------------------------------------------->
   }  //- end bracket for gaming section
+      //println(leaderboard);
 }
 
 void keyPressed() {
@@ -177,4 +190,15 @@ void keyPressed() {
     //2. randomize zone
     level.update();
   }
+  
+  //direct play game shortcut
+  if (key == 'p'){
+    //1. reset data
+    level.resetGame();
+
+    //2. randomize zone
+    level.update();
+    
+    gamePlay = true;
+  }  
 }
