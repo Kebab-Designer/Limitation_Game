@@ -50,9 +50,9 @@ class Item {
     fill(honey);
     circle(itemSpawn, itemHeight +=2, size);
 
-    //itemdebugging
-    stroke(255);
-    strokeWeight(2);
-    line(itemSpawn, itemHeight, mouseX, mouseY);
+    ////itemdebugging
+    //stroke(255);
+    //strokeWeight(2);
+    //line(itemSpawn, itemHeight, mouseX, mouseY);
   }
 }

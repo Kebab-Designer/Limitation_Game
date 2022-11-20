@@ -149,9 +149,12 @@ void draw() {
 
 void keyPressed() {
 
-  //1. reset data
-  level.resetGame();
+  //reset game
+  if (key == 'r') {
+    //1. reset data
+    level.resetGame();
 
-  //2. randomize zone
-  level.update();
+    //2. randomize zone
+    level.update();
+  }
 }
