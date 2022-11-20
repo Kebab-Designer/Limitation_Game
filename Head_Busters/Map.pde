@@ -23,7 +23,7 @@ class Map {
     // old -> //zoneSize = int(random(150, 400));
 
     //incriment smaller zoneSize
-    zoneSize = 500 - (stage*20);
+    zoneSize = 400 - (stage*20);
     //println(stage);
 
     //first randomize in order to offset from the edge
@@ -48,7 +48,7 @@ class Map {
     stage ++;
 
     //increase player size each level
-    player1.size = player1.size + 20;
+    player1.size = player1.size + 10;
     
     //reset item spawn
     powerUp.collected = false;
@@ -70,10 +70,10 @@ class Map {
 
   void resetGame() {
     //reset player size
-    player1.size = 60;
+    player1.size = 40;
     
     //reset zone size
-    zoneSize = 500;
+    zoneSize = 400;
     
     //reset level
     stage = 0;

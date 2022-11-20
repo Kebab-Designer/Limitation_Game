@@ -64,7 +64,7 @@ class Player {
     //line(mouseX, mouseY, map.zoneX, map.zoneY);
 
     noStroke();
-    fill(isSafe ? mint : crimson);
+    fill(isSafe ? mint : crimson); //control player display if safe and in danger
     circle(x, y, size);
   }
 }

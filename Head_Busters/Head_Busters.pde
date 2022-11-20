@@ -17,18 +17,18 @@ boolean gameStatus = true;
 boolean gamePlay = false; //used to control from game to lobby
 boolean leaderboard = false; //used to show leaderboard in lobby
 
-
-void settings() {
-  //full screen and resolution if on smaller and larger devices
-  if (displayWidth > 1920 && displayHeight > 1080) {
-    size(1920, 1080);
-  } else {
-    fullScreen();
-    //size(displayWidth, displayHeight); //not using fullscreen because both are mutually exclusive
-  }
-}
+//void settings() {
+//  //full screen and resolution if on smaller and larger devices
+//  if (displayWidth > 1920 && displayHeight > 1080) {
+//    size(1280, 720);
+//  } else {
+//    fullScreen();
+//    //size(displayWidth, displayHeight); //not using fullscreen because both are mutually exclusive
+//  }
+//}
 
 void setup() {
+  size(1280, 720);
   //dictates countdown speed :(
   frameRate(60);
   
@@ -36,7 +36,7 @@ void setup() {
   ui = new Screen();
 
   //create player
-  player1 = new Player(0, 0, 60, 0, 0);
+  player1 = new Player(0, 0, 40, 0, 0);
 
   //create the level
   level = new Map();
@@ -171,9 +171,9 @@ void draw() {
     //4. layer -----------------> ui
     //Gui -----v
     textFont(body);
-    textAlign(LEFT);
+    textAlign(CENTER);
     fill(white);
-    text("Level:  " + level.stage, 10, 24);
+    text("Level:  " + level.stage, width/2, height - 24);
 
     //gaming time -------------------------------------------------->
   }  //- end bracket for gaming section
