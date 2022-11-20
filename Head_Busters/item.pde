@@ -39,7 +39,7 @@ class Item {
       //println("collected");
       
       //when item is collected
-      player1.size -= 30; //reduce player size by 30
+      player[0].size -= 30; //reduce player size by 30
       
     } else {
       collected = false;

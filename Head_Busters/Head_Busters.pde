@@ -1,5 +1,7 @@
+//arrays
 //create player
-Player player1;
+Player[] player;
+int lobby = 0;
 
 //initialize map
 Map level;
@@ -10,7 +12,6 @@ Item powerUp;
 //initialize screens
 Screen ui;
 
-//
 
 //gameflow booleans
 boolean gameStatus = true;
@@ -37,14 +38,17 @@ void setup() {
   //create ui
   ui = new Screen();
 
+  //array create
+  Player[] player = new Player[1];
+  
   //create player
-  player1 = new Player(0, 0, 40, 0, 0);
+  player[0] = new Player(0, 0, 40, 0, 0);
 
   //create the level
   level = new Map();
 
   //the created map is the level instance
-  player1.map = level;
+  player[0].map = level;
 
   //setup item
   powerUp = new Item();
@@ -93,23 +97,23 @@ void draw() {
     if (level.countdown < 0.4) {
 
       //player safe -> win
-      if (player1.isSafe == true) {
+      if (player[0].isSafe == true) {
         //println("win");
 
         //game flow for screens
         gameStatus = true;
 
-        player1.success = true;
+        player[0].success = true;
       }
 
       //player not safe -> lose
-      if (player1.isSafe == false) {
+      if (player[0].isSafe == false) {
         //println("lose");
 
         //gameflow for screens
         gameStatus = false;
 
-        player1.success = false;
+        player[0].success = false;
       }
     }
 
@@ -117,7 +121,7 @@ void draw() {
     //congratulate players //wait a few sec
     //restart the process at step 0.
 
-    if (player1.success == true) {
+    if (player[0].success == true) {
       level.progress();
       level.update();
 
@@ -167,8 +171,8 @@ void draw() {
     }
 
     //3. layer -----------------> player
-    player1.move();
-    player1.display();
+    player[0].move();
+    player[0].display();
 
     //4. layer -----------------> ui
     //Gui -----v

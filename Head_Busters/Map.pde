@@ -16,7 +16,7 @@ class Map {
 
   void update() {
     //state of success
-    player1.success = false;
+    player[0].success = false;
 
     //random zone generation
     //randomize size
@@ -48,7 +48,7 @@ class Map {
     stage ++;
 
     //increase player size each level
-    player1.size = player1.size + 10;
+    player[0].size = player[0].size + 10;
     
     //reset item spawn
     powerUp.collected = false;
@@ -70,7 +70,7 @@ class Map {
 
   void resetGame() {
     //reset player size
-    player1.size = 40;
+    player[0].size = 40;
     
     //reset zone size
     zoneSize = 400;
