@@ -1,3 +1,9 @@
+//fonts
+PFont score; //euclid bold
+PFont body; //euclid medium
+PFont h1; //euclid bold
+PFont h3; //euclid light
+
 class Typo {
   
   int x;

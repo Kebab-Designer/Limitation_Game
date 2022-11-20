@@ -7,8 +7,14 @@ Map level;
 //initialize items
 Item powerUp;
 
+//initialize screens
+Screen ui;
+
 //gameflow booleans
 boolean gameStatus = true;
+
+//boolean for gameplay and menu time
+boolean gamePlay = false;
 
 void settings() {
   //full screen and resolution if on smaller and larger devices
@@ -23,7 +29,11 @@ void settings() {
 void setup() {
   //dictates countdown speed :(
   frameRate(60);
+  
+  //create ui
+  ui = new Screen();
 
+  //create player
   player1 = new Player(0, 0, 60, 0, 0);
 
   //create the level
@@ -41,6 +51,8 @@ void setup() {
   //font stuff
   score = createFont("EuclidSquare-Bold.otf", 640);
   body = createFont("EuclidSquare-Medium.otf", 24);
+  h1 = createFont("EuclidSquare-Bold.otf", 80);
+  h3 = createFont("EuclidSquare-Light.otf", 32);
 
   //reset game
   level.resetGame();
@@ -51,100 +63,108 @@ void setup() {
 
 void draw() {
 
-  // 0. Set the stage level and difficulty(0, 1, 2 etc.)
-  level.countDown();
-
-  // 1. Where is the Zone
-  // 2. Where is the player
-  // 3. Check the timer
-  // 4. If timer has run out check if player is safe
-
-  //is player safe when countdown is at 0
-  //Player lose
-  if (level.countdown < 0.4) {
-
-    //player safe -> win
-    if (player1.isSafe == true) {
-      //println("win");
-
-      //game flow for screens
-      gameStatus = true;
-
-      player1.success = true;
-    }
-
-    //player not safe -> lose
-    if (player1.isSafe == false) {
-      //println("lose");
-
-      //gameflow for screens
-      gameStatus = false;
-
-      player1.success = false;
-    }
-  }
-
-  //if all players are safe
-  //congratulate players //wait a few sec
-  //restart the process at step 0.
-
-  if (player1.success == true) {
-    level.progress();
-    level.update();
-
-    //first time player has progressed //only happens once
-    if (level.stage > 2) {
-      powerUp.generate();
-    }
-  }
-
-  //if one player not safe
-  //announce the other player has won
-  //optional -> advance to next level
-
-  //after all of this -> start drawing
+  //menu time -------------------------------------------------->
+    //homeScreen
+      ui.home();
+  //menu time -------------------------------------------------->
 
 
-  background(gameStatus ? black : honey);
+  if (gamePlay == true) {
+    //gaming time -------------------------------------------------->
+    // 0. Set the stage level and difficulty(0, 1, 2 etc.)
+    level.countDown();
 
-  //display timer
-  textFont(score);
-  textAlign(CENTER);
-  fill(12);
-  //rounds the countdown with the int instead of manually doing it
-  text(int(level.countdown), width/2, height/2 + 240); //addition to compensate for font height
+    // 1. Where is the Zone
+    // 2. Where is the player
+    // 3. Check the timer
+    // 4. If timer has run out check if player is safe
 
-  //1. layer -----------------> map
-  level.display();
+    //is player safe when countdown is at 0
+    //Player lose
+    if (level.countdown < 0.4) {
 
-  //2. layer -----------------> items
-  if (level.stage > 2) { //activate items after passing level 2
+      //player safe -> win
+      if (player1.isSafe == true) {
+        //println("win");
 
-    //modulo the stage to get a item every second level
-    //modulo
-    int frequency = level.stage%2; //only spits out 0 and 1
-    if (frequency > 0 && gameStatus == true) {
+        //game flow for screens
+        gameStatus = true;
 
-      //only display when item has not been collected
-      if (powerUp.collected == false) {
-        powerUp.display();
+        player1.success = true;
+      }
+
+      //player not safe -> lose
+      if (player1.isSafe == false) {
+        //println("lose");
+
+        //gameflow for screens
+        gameStatus = false;
+
+        player1.success = false;
       }
     }
-  }
 
-  //3. layer -----------------> player
-  player1.move();
-  player1.display();
+    //if all players are safe
+    //congratulate players //wait a few sec
+    //restart the process at step 0.
 
-  //4. layer -----------------> ui
-  //Gui -----v
-  textFont(body);
-  textAlign(LEFT);
-  fill(white);
-  text("Level:  " + level.stage, 10, 24);
+    if (player1.success == true) {
+      level.progress();
+      level.update();
 
-  //debug
-  //println(frameCount%2);
+      //first time player has progressed //only happens once
+      if (level.stage > 2) {
+        powerUp.generate();
+      }
+    }
+
+    //if one player not safe
+    //announce the other player has won
+    //optional -> advance to next level
+
+    //after all of this -> start drawing
+
+
+    background(gameStatus ? black : honey);
+
+    //display timer
+    textFont(score);
+    textAlign(CENTER);
+    fill(12);
+    //rounds the countdown with the int instead of manually doing it
+    text(int(level.countdown), width/2, height/2 + 240); //addition to compensate for font height
+
+    //1. layer -----------------> map
+    level.display();
+
+    //2. layer -----------------> items
+    if (level.stage > 2) { //activate items after passing level 2
+
+      //modulo the stage to get a item every second level
+      //modulo
+      int frequency = level.stage%2; //only spits out 0 and 1
+      if (frequency > 0 && gameStatus == true) {
+
+        //only display when item has not been collected
+        if (powerUp.collected == false) {
+          powerUp.display();
+        }
+      }
+    }
+
+    //3. layer -----------------> player
+    player1.move();
+    player1.display();
+
+    //4. layer -----------------> ui
+    //Gui -----v
+    textFont(body);
+    textAlign(LEFT);
+    fill(white);
+    text("Level:  " + level.stage, 10, 24);
+
+    //gaming time -------------------------------------------------->
+  }  //- end bracket for gaming section
 }
 
 void keyPressed() {
