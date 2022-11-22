@@ -16,7 +16,9 @@ class Map {
 
   void update() {
     //state of success
-    player[0].success = false;
+    for (Andy u : user) {
+      u.success = false;
+    }
 
     //random zone generation
     //randomize size
@@ -48,8 +50,10 @@ class Map {
     stage ++;
 
     //increase player size each level
-    player[0].size = player[0].size + 10;
-    
+    for (Andy u : user) {
+      u.size += 10;
+    }
+
     //reset item spawn
     powerUp.collected = false;
   }
@@ -57,7 +61,7 @@ class Map {
   void countDown() {
 
     //variable for countdown interval
-    float interval = .02;
+    float interval = .04;
 
     //only subtracts if not 0
     if (countdown >= interval) {
@@ -70,19 +74,21 @@ class Map {
 
   void resetGame() {
     //reset player size
-    player[0].size = 40;
-    
+    for (Andy u : user) {
+      u.size = 40;
+    }
+
+
     //reset zone size
     zoneSize = 400;
-    
-    //reset level
-    stage = 0;
-    
+
     //reset timer
     countdown = 10.8;
-    
+
     //reset gameStatus game over
     gameStatus = true;
     
+    //reset level
+    stage = 0;
   }
 }

@@ -1,7 +1,13 @@
-//arrays
+import processing.video.*;
+Capture video; //initial class "Capture" to beginn capturing video material
+
+//void event to get new content from camera if available (smooth video transmission)
+void captureEvent(Capture video) {
+  video.read();
+}
+
 //create player
-Player[] player;
-int lobby = 0;
+Player player1;
 
 //initialize map
 Map level;
@@ -12,13 +18,16 @@ Item powerUp;
 //initialize screens
 Screen ui;
 
-
 //gameflow booleans
-boolean gameStatus = true;
+boolean gameStatus = true; //used when in game
 
 //boolean for gameplay and menu time
 boolean gamePlay = false; //used to control from game to lobby
-boolean leaderboard = false; //used to show leaderboard in lobby
+boolean preGame = false; //used for calibrating players
+boolean controls = false; //used to show leaderboard in lobby
+boolean giveItem = false; //used to control when to spawn items
+boolean multiplayer = false; //used to declare multiple people
+boolean rewards = false; //used to show winning screen
 
 //void settings() {
 //  //full screen and resolution if on smaller and larger devices
@@ -30,25 +39,29 @@ boolean leaderboard = false; //used to show leaderboard in lobby
 //  }
 //}
 
+//arraystuff
+ArrayList<Andy> user = new ArrayList<Andy>(); //define arrayList
+
+
 void setup() {
   size(1280, 720);
   //dictates countdown speed :(
   frameRate(60);
-  
+
+  //camere shozzle
+  printArray(Capture.list());
+
   //create ui
   ui = new Screen();
 
-  //array create
-  Player[] player = new Player[1];
-  
   //create player
-  player[0] = new Player(0, 0, 40, 0, 0);
+  player1 = new Player(0, 0, 40, 0, 0);
 
   //create the level
   level = new Map();
 
   //the created map is the level instance
-  player[0].map = level;
+  player1.map = level; //redundant
 
   //setup item
   powerUp = new Item();
@@ -67,20 +80,36 @@ void setup() {
 
   //generate the very first circle in advance
   level.update();
+
+  //video initialize
+  video = new Capture(this, 1280, 720, 30); //start new capture, capture size and fps
+  video.start(); //start the video function
 }
+
 
 void draw() {
 
   //menu time -------------------------------------------------->
-    //homeScreen
-      ui.home();
-      
-      if(leaderboard){
-        //show leaderboard
-        ui.leaderboard();
-      }
+  //homeScreen
+  ui.home();
+
+  if (controls) {
+    //show leaderboard
+    ui.controls();
+  }
   //menu time -------------------------------------------------->
 
+  /* ---------- user creation ------------*/
+  if (preGame) {
+    ui.preGame();
+
+
+    //array
+    for (Andy p : user) {
+      p.display();
+    }
+  }
+  /* ---------- user creation ------------*/
 
   if (gamePlay == true) {
     //gaming time -------------------------------------------------->
@@ -96,24 +125,16 @@ void draw() {
     //Player lose
     if (level.countdown < 0.4) {
 
-      //player safe -> win
-      if (player[0].isSafe == true) {
-        //println("win");
-
-        //game flow for screens
-        gameStatus = true;
-
-        player[0].success = true;
-      }
-
-      //player not safe -> lose
-      if (player[0].isSafe == false) {
-        //println("lose");
-
-        //gameflow for screens
-        gameStatus = false;
-
-        player[0].success = false;
+      //array checks if each player is safe
+      //if not safe they get removed
+      //if safe the gameStatus is set to true
+      for (int i = 0; i < user.size(); i++) {
+        if (user.get(i).isSafe == false) {
+          user.remove(user.get(i));
+        } else {
+          gameStatus = true;
+          user.get(i).success = true;
+        }
       }
     }
 
@@ -121,15 +142,52 @@ void draw() {
     //congratulate players //wait a few sec
     //restart the process at step 0.
 
-    if (player[0].success == true) {
-      level.progress();
-      level.update();
+    if (multiplayer) {
+      //game send to lobby prototype loop
+      if (user.size() < 2) { //has player lost?
+        //gamePlay = false; //therefore not gaming anymore -> back to the lobby
 
-      //first time player has progressed //only happens once
-      if (level.stage > 2) {
-        powerUp.generate();
+        //reset process
+        for (Andy u : user) {
+          u.size = 40;
+        }
+        //reset zone size
+        level.zoneSize = 400;
+
+        //reset timer
+        level.countdown = 10.8;
+
+        //reset gameStatus game over
+        gameStatus = true;
+
+        rewards = true;
+      } else {
+        for (Andy p : user) {
+
+          if (p.success == true) {
+            level.progress();
+            level.update();
+          }
+        }
+      }
+    } else {
+      for (Andy p : user) {
+
+        if (p.success == true) {
+          level.progress();
+          level.update();
+        }
       }
     }
+
+    //if on multiplayer and there is only one player left -> game win
+
+    //first time player has progressed //only happens once -------------------- OLD ITEM STUFF
+    //if (level.stage > 2) {
+    //  giveItem = true;
+    //  powerUp.generate();
+    //}
+
 
     //if one player not safe
     //announce the other player has won
@@ -139,16 +197,11 @@ void draw() {
 
 
     background(black);    //gameplay background
-    
-    //game send to lobby prototype loop
-    if (gameStatus == false){ //has player lost?
-      gamePlay = false; //therefore not gaming anymore -> back to the lobby
-    }
-
+    blendMode(NORMAL);
     //display timer
     textFont(score);
     textAlign(CENTER);
-    fill(12);
+    fill(20);
     //rounds the countdown with the int instead of manually doing it
     text(int(level.countdown), width/2, height/2 + 240); //addition to compensate for font height
 
@@ -156,23 +209,33 @@ void draw() {
     level.display();
 
     //2. layer -----------------> items
-    if (level.stage > 2) { //activate items after passing level 2
+    //if (level.stage > 2) { //activate items after passing level 2
 
-      //modulo the stage to get a item every second level
-      //modulo
-      int frequency = level.stage%2; //only spits out 0 and 1
-      if (frequency > 0 && gameStatus == true) {
+    //  //modulo the stage to get a item every second level
+    //  //modulo
+    //  int frequency = level.stage%2; //only spits out 0 and 1
+    //  if (frequency > 0 && gameStatus == true) {
 
-        //only display when item has not been collected
-        if (powerUp.collected == false) {
-          powerUp.display();
-        }
-      }
-    }
+    //    //only display when item has not been collected
+    //    if (powerUp.collected == false) {
+    //      powerUp.display();
+    //    }
+    //  }
+    //}
 
     //3. layer -----------------> player
-    player[0].move();
-    player[0].display();
+    //player1.move();
+    //player1.display();
+
+    //array
+    for (Andy p : user) {
+      p.display();
+      p.collision();
+    }
+
+    if (rewards) {
+      ui.youWon();
+    }
 
     //4. layer -----------------> ui
     //Gui -----v
@@ -181,9 +244,10 @@ void draw() {
     fill(white);
     text("Level:  " + level.stage, width/2, height - 24);
 
+
     //gaming time -------------------------------------------------->
   }  //- end bracket for gaming section
-      //println(leaderboard);
+  //println(leaderboard);
 }
 
 void keyPressed() {
@@ -195,16 +259,85 @@ void keyPressed() {
 
     //2. randomize zone
     level.update();
+
+    preGame = true;
+    rewards = false;
+    gamePlay = false;
   }
-  
+
   //direct play game shortcut
-  if (key == 'p'){
+  if (key == 'p') {
     //1. reset data
     level.resetGame();
 
     //2. randomize zone
     level.update();
-    
+
+    preGame = true;
+    multiplayer = false;
+  }
+
+  //advance to gameplay with SPACE
+  if (key == ' ') {
     gamePlay = true;
-  }  
+    preGame = false;
+  }
+
+  if (key == 'f') {
+    user = new ArrayList<Andy>(); //define arrayList
+    multiplayer = false;
+  }
+
+  //flush entire programm
+  if (key == 'q') {
+    //gameflow booleans
+    gameStatus = true; //used when in game
+    gamePlay = false; //used to control from game to lobby
+    preGame = false; //used for calibrating players
+    controls = false; //used to show leaderboard in lobby
+    giveItem = false; //used to control when to spawn items
+    multiplayer = false; //used to declare multiple people
+    rewards = false; //used to show winning screen
+
+    user = new ArrayList<Andy>(); //define arrayList
+    multiplayer = false;
+  }
+}
+
+void mousePressed() {
+  //sample color
+  if (preGame) {
+    //array
+    Andy p = new Andy();
+    user.add(p);
+    p.sampleColor();
+
+    //sets multiplayer on if more than one player is registered
+    if (user.size() > 1) {
+      multiplayer = true;
+    }
+    println(multiplayer);
+  }
+
+  //btn 2 = c
+  if (mouseX >= 480 && mouseX <= 800) {
+    if (mouseY > 480 && mouseY < 540) {
+      //leaderboard
+      controls = true;
+    }
+  }
+
+  //btn 1 = p
+  if (mouseX >= 120 && mouseX <= 440) {
+    if (mouseY > 480 && mouseY < 540) {
+      //1. reset data
+      level.resetGame();
+
+      //2. randomize zone
+      level.update();
+
+      preGame = true;
+      multiplayer = false;
+    }
+  }
 }
