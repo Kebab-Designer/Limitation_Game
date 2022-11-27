@@ -82,7 +82,7 @@ void setup() {
   level.update();
 
   //video initialize
-  video = new Capture(this, 1280, 720, 30); //start new capture, capture size and fps
+  video = new Capture(this, 1280, 720, "pipeline:avfvideosrc device-index=0 ! video/x-raw, width=1280, height=720, framerate=30/1"); //start new capture, capture size and fps
   video.start(); //start the video function
 }
 
